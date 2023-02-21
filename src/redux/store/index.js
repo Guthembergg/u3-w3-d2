@@ -8,7 +8,9 @@ import { encryptTransform } from "redux-persist-transform-encrypt";
 const persistConfig = {
   key: "root",
   storage: storage,
-  transforms: [encryptTransform({ secretKey: "MYSECRETKEY" })],
+  transforms: [
+    encryptTransform({ secretKey: process.env.REACT_APP_PERSIST_KEY }),
+  ],
 };
 
 const rootReducer = combineReducers({
