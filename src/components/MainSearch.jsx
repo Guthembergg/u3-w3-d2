@@ -52,7 +52,7 @@ const MainSearch = () => {
           {loading && <Spinner animation="border" variant="primary" />}
           <Link to={"/favourites"}>
             <HeartFill></HeartFill>
-            <Badge variant="primary">{numberSelect}</Badge>
+            <Badge variant="secondary">{numberSelect}</Badge>
           </Link>
         </Col>
         <Col xs={10} className="mx-auto">

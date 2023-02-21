@@ -23,6 +23,7 @@ const Job = ({ data, i }) => {
         </a>
         {array.includes(data._id) && (
           <HeartFill
+            className="cuori"
             type="submit"
             onClick={() => {
               dispatch({
