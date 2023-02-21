@@ -1,5 +1,14 @@
 import { useState } from "react";
-import { Container, Row, Col, Form, Button, Badge } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Badge,
+  Alert,
+  Spinner,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { HeartFill } from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +20,11 @@ const MainSearch = () => {
   const [jobs, setJobs] = useState([]);
   const numberSelect = useSelector((state) => state.favourite.content.length);
   const realJobs = useSelector((state) => state.data.array);
+  const error = useSelector((state) => state.data.error);
+  const errorMessage = useSelector((state) => state.data.errorMessage);
+
+  const loading = useSelector((state) => state.data.loading);
+
   const dispatch = useDispatch();
 
   const baseEndpoint =
@@ -35,6 +49,7 @@ const MainSearch = () => {
           className="mx-auto my-3 d-flex justify-content-between align-items-center"
         >
           <h1>Remote Jobs Search</h1>
+          {loading && <Spinner animation="border" variant="primary" />}
           <Link to={"/favourites"}>
             <HeartFill></HeartFill>
             <Badge variant="primary">{numberSelect}</Badge>
@@ -51,6 +66,12 @@ const MainSearch = () => {
           </Form>
         </Col>
         <Col xs={10} className="mx-auto mb-5">
+          {error && (
+            <Alert variant="danger">
+              Something went wrong {errorMessage ? error : ""}
+            </Alert>
+          )}
+
           {realJobs.map((jobData, i) => (
             <Job key={jobData._id} data={jobData} i={i} />
           ))}

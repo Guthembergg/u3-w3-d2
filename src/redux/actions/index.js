@@ -3,6 +3,10 @@ export const REMOVE = "REMOVE";
 export const ADD_ID = "ADD_ID";
 export const REMOVE_ID = "REMOVE_ID";
 export const DATA = "DATA";
+export const ERROR = "ERROR";
+export const LOADING = "LOADING";
+export const ERROR_FALSE = "ERROR_FALSE";
+export const LOADING_FALSE = "LOADING_FALSE";
 
 export const removeID = (value) => ({ type: REMOVE_ID, payload: value });
 export const addID = (value) => ({ type: ADD_ID, payload: value });
@@ -12,6 +16,9 @@ export const data = (value) => ({ type: DATA, payload: value });
 
 export const getJobAction = (baseEndpoint, query) => {
   return async (dispatch, getState) => {
+    dispatch({
+      type: LOADING,
+    });
     try {
       const response = await fetch(baseEndpoint + query + "&limit=20");
       if (response.ok) {
@@ -20,11 +27,28 @@ export const getJobAction = (baseEndpoint, query) => {
           type: DATA,
           payload: data,
         });
+        dispatch({
+          type: LOADING_FALSE,
+        });
       } else {
         alert("Error fetching results");
+        dispatch({
+          type: LOADING_FALSE,
+        });
+        dispatch({
+          type: ERROR,
+          payload: "fetch error",
+        });
       }
     } catch (error) {
       console.log(error);
+      dispatch({
+        type: LOADING_FALSE,
+      });
+      dispatch({
+        type: ERROR,
+        payload: error.message,
+      });
     }
   };
 };
